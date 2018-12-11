@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.htcs.cms.dao.IDoctorAppointmentRecordsDao">
+	<sql id="column_list">
+		a.rec_id, a.consulting_name, a.consulting_qq, a.consulting_phone, a.description, a.appointment_begin_time,
+		a.appointment_end_time,
+		a.operate_time, a.doctor_id, a.operator_id
+	</sql>
+
+	<resultMap type="com.htcs.cms.entity.DoctorAppointmentRecords" id="resultMap">
+		<id column="rec_id" property="recId" />
+		<result column="consulting_name" property="consultingName"/>
+		<result column="consulting_qq" property="consultingQQ"/>
+		<result column="consulting_phone" property="consultingPhone"/>
+		<result column="description" property="description" />
+		<result column="appointment_begin_time" property="appointmentBeginTime" />
+		<result column="appointment_end_time" property="appointmentEndTime" />
+		<result column="operate_time" property="operateTime" />
+
+		<!-- 一对一关联栏目 -->
+		<association property="doctor" column="doctor_id"
+			javaType="com.htcs.cms.entity.ArticleEntity">
+			<result column="basic_id" property="basicId"/>
+			<result column="basic_title" property="basicTitle" />
+		</association>
+		<!-- 一对一关联栏目 -->
+		<association property="manager" column="doctor_id"
+					 javaType="com.mingsoft.basic.entity.ManagerEntity">
+			<result column="manager_name" property="managerName" />
+			<result column="manager_nickname" property="managerNickName" />
+		</association>
+
+
+	</resultMap>
+
+	<delete id="deleteEntity" parameterType="int">
+		delete from doctor_appointment_records
+		where rec_id = #{id}
+	</delete>
+
+	<delete id="delete" parameterType="int">
+		delete from doctor_appointment_records
+		where rec_id in (${_parameter})
+	</delete>
+
+	<insert id="saveEntity" parameterType="com.htcs.cms.entity.DoctorAppointmentRecords" useGeneratedKeys="true"
+			keyProperty="rec_id">
+		insert into doctor_appointment_records (
+			consulting_name,
+			consulting_qq,
+			consulting_phone,
+			doctor_id,
+			appointment_begin_time,
+			appointment_end_time,
+			description,
+			operator_id,
+			operate_time) VALUE (
+			#{consultingName},
+			#{consultingQQ},
+			#{consultingPhone},
+			#{doctor.basicId},
+			#{appointmentBeginTime},
+			#{appointmentEndTime},
+			#{description},
+			#{manager.managerId},
+			#{operateTime}
+		)
+	</insert>
+
+	<update id="updateEntity" parameterType="com.htcs.cms.entity.DoctorAppointmentRecords">
+		update doctor_appointment_records SET
+		consulting_name = #{consultingName},
+		consulting_qq = #{consultingQQ},
+		consulting_phone = #{consultingPhone},
+		appointment_begin_time = #{appointmentBeginTime},
+		appointment_end_time = #{appointmentEndTime},
+		description = #{description},
+		operate_time = #{operateTime}
+		doctor_id = #{doctor.basicId},
+		operator_id = #{manager.managerId}
+		WHERE rec_id=#{recId}
+	</update>
+
+	<select id="getEntity" resultMap="resultMap" parameterType="int">
+		select
+		<include refid="column_list" />, b.*, c.*
+		FROM
+		doctor_appointment_records a left JOIN basic b
+		on a.doctor_id = b.basic_id
+		LEFT JOIN manager c
+		on a.operator_id = c.manager_id
+		where a.rec_id=#{id}
+	</select>
+	<!-- 查找文章管理的信息 结束 -->
+
+
+	<select id="count" resultType="int">
+		select
+		count(1)
+		FROM doctor_appointment_records
+	</select>
+	<!-- 列表查询结束 -->
+
+	<!-- 列表查询开始 -->
+	<select id="query" resultMap="resultMap" >
+
+		select
+		<include refid="column_list" />, b.*, c.*
+		FROM doctor_appointment_records a left JOIN basic b
+		on a.doctor_id = b.basic_id
+		LEFT JOIN manager c
+		on a.operator_id = c.manager_id
+		WHERE 1 = 1
+		<if test="doctor != null  and doctor.basicTitle != null and doctor.basicTitle != '' ">
+			and b.basic_title like #{doctor.basicTitle}
+		</if>
+
+	</select>
+
+	<select id="queryAll" resultMap="resultMap" >
+		select
+		<include refid="column_list" />, b.*, c.*
+		FROM doctor_appointment_records a left JOIN basic b
+		on a.doctor_id = b.basic_id
+		LEFT JOIN manager c
+		on a.operator_id = c.manager_id
+	</select>
+
+	<select id="queryDoctorCategory" resultType="map">
+		select
+		co.column_category_id
+		from basic_column co left join category ca on ca.category_id=co.column_category_id where ca.del = 0
+		and co.column_cm_id= 5
+		<if test="categoryId != 0">
+			and co.column_category_id=#{categoryId}
+		</if>
+	</select>
+</mapper>

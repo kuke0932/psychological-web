@@ -1,0 +1,116 @@
+.container{
+    max-width:1000px;
+}
+.container-fluid{
+    margin-top: 20px;
+}
+/*导航条*/
+.myTags li:hover{
+    background: #ddd;
+}
+/*中心简介 通知中心*/
+.news_intro{
+    margin-top: 20px;
+}
+hr{
+    margin: 5px 0 10px 0;
+}
+.news_intro span,#doc_reco span{
+    padding-top: 10px;
+    font-size: 12px;
+}
+/*专家推荐*/
+.doc_intro{
+    float:left;
+    padding:0 30px;
+    margin:0 auto;
+}
+.doc_intro li{
+    color:#761c19;
+    padding:10px;
+    float:left;
+    max-width:210px;
+}
+/*精品文章*/
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    cursor: pointer ;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art_detail{
+    padding:0 20px;
+}
+.art_detail li{
+    float:left;
+    padding:5px;
+    max-width:450px;
+    max-height:120px;
+}
+@media screen and (max-width: 1199px){
+    .art_detail li{
+        max-width:900px;
+    }
+}
+.art_detail li span{
+    font-size: 14px;
+    margin-right: 50px;
+}
+.look_more{
+    margin:20px 0 50px 0;
+}
+/*底部*/
+.footer{
+    color:#aaa;
+    margin-bottom: 20px;
+    position: fixed;
+    bottom: 0;
+}
+
+/*-- to-top 回到顶部--*/
+#toTop {
+    cursor: pointer;
+    display: none;
+    text-decoration: none;
+    position: fixed;
+    bottom: 20px;
+    right: 2%;
+    overflow: hidden;
+    z-index: 999;
+    width: 32px;
+    height: 32px;
+    border: none;
+    text-indent: 100%;
+    background: url(../images/up.png) no-repeat 0px 0px;
+}
+#toTopHover {
+    width: 32px;
+    height: 32px;
+    display: block;
+    overflow: hidden;
+    float: right;
+    opacity: 0;
+    -moz-opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+/*在线预约*/
+.qq{
+    position:fixed;
+    top:35%;
+    right:0;
+    width:75px;
+    height:225px;
+    z-index:9999;
+}
+.qq a{
+    height:75px;
+    display: block;
+    background: url(../images/r_qq.png) center center no-repeat;
+    background-color: #6da9de;
+    transition:all 0.2s linear;
+}
+.qq a:hover{
+    background-color: #3879D9;
+}

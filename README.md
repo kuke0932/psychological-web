@@ -1,2 +1,0 @@
-# psychological-web
-psychological-web
